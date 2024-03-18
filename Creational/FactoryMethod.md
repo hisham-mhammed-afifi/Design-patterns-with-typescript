@@ -31,3 +31,199 @@ Here are five practical scenarios where you can apply the Factory Method Pattern
 5. **Game Character Factory**: In a game development scenario, you may have different types of game characters like warriors, mages, and archers. Implementing a game character factory using the Factory Method Pattern allows you to create instances of these characters dynamically. Each concrete factory class can produce a specific type of character, with subclasses providing variations such as different weapons or abilities.
 
 In each of these scenarios, the Factory Method Pattern helps in decoupling the client code from the concrete classes being instantiated, allowing for flexibility, extensibility, and maintainability of the codebase. It enables you to write code that is easier to understand, test, and extend, making it a valuable design pattern for real-world applications.
+
+---
+
+Let's build a small TypeScript application to demonstrate the Factory Method Pattern in the context of creating different types of vehicles. We'll create a base `Vehicle` interface, concrete vehicle classes (`Car`, `Bike`, `Truck`), and a `VehicleFactory` interface with concrete implementations (`CarFactory`, `BikeFactory`, `TruckFactory`) to demonstrate how the Factory Method Pattern works.
+
+First, let's define the `Vehicle` interface and concrete vehicle classes:
+
+```typescript
+// Vehicle interface
+interface Vehicle {
+  drive(): void;
+}
+
+// Car class implementing Vehicle interface
+class Car implements Vehicle {
+  drive(): void {
+    console.log("Driving a car");
+  }
+}
+
+// Bike class implementing Vehicle interface
+class Bike implements Vehicle {
+  drive(): void {
+    console.log("Riding a bike");
+  }
+}
+
+// Truck class implementing Vehicle interface
+class Truck implements Vehicle {
+  drive(): void {
+    console.log("Driving a truck");
+  }
+}
+```
+
+Next, let's define the `VehicleFactory` interface and concrete factory classes:
+
+```typescript
+// VehicleFactory interface
+interface VehicleFactory {
+  createVehicle(): Vehicle;
+}
+
+// CarFactory class implementing VehicleFactory interface
+class CarFactory implements VehicleFactory {
+  createVehicle(): Vehicle {
+    return new Car();
+  }
+}
+
+// BikeFactory class implementing VehicleFactory interface
+class BikeFactory implements VehicleFactory {
+  createVehicle(): Vehicle {
+    return new Bike();
+  }
+}
+
+// TruckFactory class implementing VehicleFactory interface
+class TruckFactory implements VehicleFactory {
+  createVehicle(): Vehicle {
+    return new Truck();
+  }
+}
+```
+
+Now, let's create a client code to test the implementation:
+
+```typescript
+// Client code
+class Client {
+  private vehicleFactory: VehicleFactory;
+
+  constructor(vehicleFactory: VehicleFactory) {
+    this.vehicleFactory = vehicleFactory;
+  }
+
+  driveVehicle(): void {
+    const vehicle = this.vehicleFactory.createVehicle();
+    vehicle.drive();
+  }
+}
+
+// Usage
+const carFactory = new CarFactory();
+const bikeFactory = new BikeFactory();
+const truckFactory = new TruckFactory();
+
+const client1 = new Client(carFactory);
+client1.driveVehicle(); // Output: Driving a car
+
+const client2 = new Client(bikeFactory);
+client2.driveVehicle(); // Output: Riding a bike
+
+const client3 = new Client(truckFactory);
+client3.driveVehicle(); // Output: Driving a truck
+```
+
+This demonstrates how the Factory Method Pattern allows us to encapsulate object creation logic, making the client code independent of the concrete classes being instantiated.
+
+---
+
+Let's build a more complex scenario: a game development framework where we have different types of game characters with various abilities. We'll use the Factory Method Pattern to create different types of game characters dynamically.
+
+First, let's define the `Character` interface and concrete character classes:
+
+```typescript
+// Character interface
+interface Character {
+  attack(): void;
+}
+
+// Warrior class implementing Character interface
+class Warrior implements Character {
+  attack(): void {
+    console.log("Warrior attacks with a sword!");
+  }
+}
+
+// Mage class implementing Character interface
+class Mage implements Character {
+  attack(): void {
+    console.log("Mage casts a fireball spell!");
+  }
+}
+
+// Archer class implementing Character interface
+class Archer implements Character {
+  attack(): void {
+    console.log("Archer shoots an arrow!");
+  }
+}
+```
+
+Next, let's define the `CharacterFactory` interface and concrete factory classes:
+
+```typescript
+// CharacterFactory interface
+interface CharacterFactory {
+  createCharacter(): Character;
+}
+
+// WarriorFactory class implementing CharacterFactory interface
+class WarriorFactory implements CharacterFactory {
+  createCharacter(): Character {
+    return new Warrior();
+  }
+}
+
+// MageFactory class implementing CharacterFactory interface
+class MageFactory implements CharacterFactory {
+  createCharacter(): Character {
+    return new Mage();
+  }
+}
+
+// ArcherFactory class implementing CharacterFactory interface
+class ArcherFactory implements CharacterFactory {
+  createCharacter(): Character {
+    return new Archer();
+  }
+}
+```
+
+Now, let's create a client code to test the implementation:
+
+```typescript
+// Client code
+class Game {
+  private characterFactory: CharacterFactory;
+
+  constructor(characterFactory: CharacterFactory) {
+    this.characterFactory = characterFactory;
+  }
+
+  startGame(): void {
+    const character = this.characterFactory.createCharacter();
+    character.attack();
+  }
+}
+
+// Usage
+const warriorFactory = new WarriorFactory();
+const mageFactory = new MageFactory();
+const archerFactory = new ArcherFactory();
+
+const game1 = new Game(warriorFactory);
+game1.startGame(); // Output: Warrior attacks with a sword!
+
+const game2 = new Game(mageFactory);
+game2.startGame(); // Output: Mage casts a fireball spell!
+
+const game3 = new Game(archerFactory);
+game3.startGame(); // Output: Archer shoots an arrow!
+```
+
+This demonstrates how the Factory Method Pattern allows us to encapsulate object creation logic, providing flexibility and extensibility in creating game characters dynamically.

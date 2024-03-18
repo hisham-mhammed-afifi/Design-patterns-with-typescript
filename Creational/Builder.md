@@ -95,3 +95,245 @@ Here are five practical scenarios where you can apply the Builder Pattern in rea
    Sometimes, objects require complex initialization logic involving multiple steps or dependencies. The Builder Pattern can be used to encapsulate this initialization logic, allowing clients to construct objects in a controlled and flexible manner. This is particularly useful when dealing with objects that have circular dependencies or require specific initialization sequences.
 
 In each of these scenarios, the Builder Pattern helps improve code readability, maintainability, and flexibility by separating the construction logic from the representation of objects or configurations. It also provides a fluent interface that makes it easy for clients to interact with the builder and customize the resulting objects according to their requirements.
+
+---
+
+Let's build a simple application for creating custom burgers at a fast-food restaurant. We'll use the Builder Pattern to construct burger objects with different ingredients and configurations. Here's a step-by-step guide:
+
+Step 1: Define the Burger class
+
+```typescript
+class Burger {
+  private size: string;
+  private meat: string;
+  private cheese: boolean;
+  private lettuce: boolean;
+  private tomato: boolean;
+  private pickles: boolean;
+
+  constructor(builder: BurgerBuilder) {
+    this.size = builder.getSize();
+    this.meat = builder.getMeat();
+    this.cheese = builder.hasCheese();
+    this.lettuce = builder.hasLettuce();
+    this.tomato = builder.hasTomato();
+    this.pickles = builder.hasPickles();
+  }
+
+  public describe(): string {
+    return `Size: ${this.size}, Meat: ${this.meat}, Cheese: ${this.cheese}, Lettuce: ${this.lettuce}, Tomato: ${this.tomato}, Pickles: ${this.pickles}`;
+  }
+}
+```
+
+Step 2: Define the BurgerBuilder class
+
+```typescript
+class BurgerBuilder {
+  private size: string;
+  private meat: string;
+  private cheese: boolean = false;
+  private lettuce: boolean = false;
+  private tomato: boolean = false;
+  private pickles: boolean = false;
+
+  constructor(size: string, meat: string) {
+    this.size = size;
+    this.meat = meat;
+  }
+
+  public addCheese(): BurgerBuilder {
+    this.cheese = true;
+    return this;
+  }
+
+  public addLettuce(): BurgerBuilder {
+    this.lettuce = true;
+    return this;
+  }
+
+  public addTomato(): BurgerBuilder {
+    this.tomato = true;
+    return this;
+  }
+
+  public addPickles(): BurgerBuilder {
+    this.pickles = true;
+    return this;
+  }
+
+  public build(): Burger {
+    return new Burger(this);
+  }
+
+  // Getters for Burger properties
+  public getSize(): string {
+    return this.size;
+  }
+
+  public getMeat(): string {
+    return this.meat;
+  }
+
+  public hasCheese(): boolean {
+    return this.cheese;
+  }
+
+  public hasLettuce(): boolean {
+    return this.lettuce;
+  }
+
+  public hasTomato(): boolean {
+    return this.tomato;
+  }
+
+  public hasPickles(): boolean {
+    return this.pickles;
+  }
+}
+```
+
+Step 3: Usage of the Builder Pattern
+
+```typescript
+// Creating a burger with specific configurations
+const burgerBuilder = new BurgerBuilder("Medium", "Beef");
+const burgerWithCheese = burgerBuilder
+  .addCheese()
+  .addLettuce()
+  .addTomato()
+  .build();
+console.log(burgerWithCheese.describe());
+
+// Creating another burger with different configurations
+const anotherBurger = new BurgerBuilder("Large", "Chicken")
+  .addLettuce()
+  .addPickles()
+  .build();
+console.log(anotherBurger.describe());
+```
+
+Using the Builder Pattern, we can create burger objects with different configurations in a flexible and readable manner. This separation of concerns between the construction logic and the representation of objects makes the code easier to maintain and extend.
+
+---
+
+Certainly! Let's create a more complex scenario where we build a car configurator application using the Builder Pattern. In this application, users can customize various aspects of a car, such as the model, color, engine type, transmission, and optional features.
+
+Step 1: Define the Car class
+
+```typescript
+class Car {
+  private model: string;
+  private color: string;
+  private engineType: string;
+  private transmission: string;
+  private hasGPS: boolean;
+  private hasBluetooth: boolean;
+  private hasParkingAssist: boolean;
+
+  constructor(builder: CarBuilder) {
+    this.model = builder.getModel();
+    this.color = builder.getColor();
+    this.engineType = builder.getEngineType();
+    this.transmission = builder.getTransmission();
+    this.hasGPS = builder.hasGPS();
+    this.hasBluetooth = builder.hasBluetooth();
+    this.hasParkingAssist = builder.hasParkingAssist();
+  }
+
+  public describe(): string {
+    return `Model: ${this.model}, Color: ${this.color}, Engine: ${this.engineType}, Transmission: ${this.transmission}, GPS: ${this.hasGPS}, Bluetooth: ${this.hasBluetooth}, Parking Assist: ${this.hasParkingAssist}`;
+  }
+}
+```
+
+Step 2: Define the CarBuilder class
+
+```typescript
+class CarBuilder {
+  private model: string;
+  private color: string;
+  private engineType: string;
+  private transmission: string;
+  private hasGPS: boolean = false;
+  private hasBluetooth: boolean = false;
+  private hasParkingAssist: boolean = false;
+
+  constructor(
+    model: string,
+    color: string,
+    engineType: string,
+    transmission: string
+  ) {
+    this.model = model;
+    this.color = color;
+    this.engineType = engineType;
+    this.transmission = transmission;
+  }
+
+  public addGPS(): CarBuilder {
+    this.hasGPS = true;
+    return this;
+  }
+
+  public addBluetooth(): CarBuilder {
+    this.hasBluetooth = true;
+    return this;
+  }
+
+  public addParkingAssist(): CarBuilder {
+    this.hasParkingAssist = true;
+    return this;
+  }
+
+  public build(): Car {
+    return new Car(this);
+  }
+
+  // Getters for Car properties
+  public getModel(): string {
+    return this.model;
+  }
+
+  public getColor(): string {
+    return this.color;
+  }
+
+  public getEngineType(): string {
+    return this.engineType;
+  }
+
+  public getTransmission(): string {
+    return this.transmission;
+  }
+
+  public hasGPS(): boolean {
+    return this.hasGPS;
+  }
+
+  public hasBluetooth(): boolean {
+    return this.hasBluetooth;
+  }
+
+  public hasParkingAssist(): boolean {
+    return this.hasParkingAssist;
+  }
+}
+```
+
+Step 3: Usage of the Builder Pattern
+
+```typescript
+// Creating a car with specific configurations
+const carBuilder = new CarBuilder("SUV", "Red", "Gasoline", "Automatic");
+const suvCar = carBuilder.addBluetooth().addParkingAssist().build();
+console.log(suvCar.describe());
+
+// Creating another car with different configurations
+const sedanCar = new CarBuilder("Sedan", "Black", "Electric", "Manual")
+  .addGPS()
+  .build();
+console.log(sedanCar.describe());
+```
+
+Using the Builder Pattern, we can create car objects with different configurations in a flexible and readable manner. This separation of concerns between the construction logic and the representation of objects makes the code easier to maintain and extend, especially in more complex scenarios like building configurable products such as cars.
